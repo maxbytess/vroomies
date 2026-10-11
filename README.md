@@ -48,7 +48,7 @@ AETHER, IGNITE and PHANTOM install the same core stack — only the package mana
 Clone the repo first:
 
 ```bash
-git clone https://github.com/maxchennn/vroomies.git
+git clone https://github.com/xzsides/vroomies.git
 cd vroomies
 ```
 
