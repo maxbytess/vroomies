@@ -1,4 +1,4 @@
-# vroomies v2.0.0 "yuni"
+# vroomies v2.0 "yuni"
 
 > 間違いも無駄も、全部愛していく。
 
