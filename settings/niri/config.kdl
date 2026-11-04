@@ -37,7 +37,7 @@ spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "cursor-theme" 
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "cursor-size" "24"
 spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "gtk-decoration-layout" ":"
 spawn-at-startup "awww-daemon"
-spawn-sh-at-startup "sleep 1 && awww img ~/.config/niri/yuna --transition-type grow --transition-duration 1.5"
+spawn-sh-at-startup "sleep 1 && awww img ~/.config/niri/wall --transition-type grow --transition-duration 1.5"
 spawn-at-startup "qs" "-c" "nn"
 spawn-at-startup "easyeffects &"
 
