@@ -1,109 +1,51 @@
-# vroomies 🚀
+# vroomies v2.0.0 "yuni"
 
 > 間違いも無駄も、全部愛していく。
 
-hyprland + quickshell. no waybar. no bloat.
-
-A collection of power-user setup scripts for Arch, Fedora, Void Linux, and NixOS — built around Hyprland, Quickshell, and a clean anime-coded terminal life.
+Minimal, scrollable, and bloat-free Niri setup for **Arch Linux, Fedora, and Void Linux**.
 
 ---
 
-## Scripts
+## Quick Start
 
-| Script | Distro | Package Manager |
-|--------|--------|-----------------|
-| `AETHER.sh` | Arch Linux / Arch-based | `yay` / `paru` / `trizen` |
-| `IGNITE.sh` | Fedora | `dnf` |
-| `PHANTOM.sh` | Void Linux | `xbps` |
-| `EDEN.sh` | NixOS | `nix` + `home-manager` + flakes |
+    git clone https://github.com/maxbytess/vroomies.git
+    cd vroomies
 
-AETHER, IGNITE and PHANTOM install the same core stack — only the package manager changes. EDEN is fully declarative via NixOS flakes + Home Manager.
+### Installation
 
----
+Make the installer scripts executable:
 
-## What Gets Installed
+    chmod +x AETHER.sh IGNITE.sh PHANTOM.sh
 
-- **WM:** Hyprland
-- **Shell:** Fish + Starship + Zoxide
-- **Bar / UI:** Quickshell
-- **Wallpaper:** awww (swww) 
-- **Terminal:** Kitty
-- **Editor:** Neovim
-- **Media:** VLC, Flatpak (Discord, LocalSend, OBS)
-- **Icons:** Papirus-Dark
-- **Fonts:** from `vroomies/fonts/`
-- **GPU:** auto-detected (NVIDIA / AMD / Intel)
+Run the script for your distribution:
+
+    ./AETHER.sh   # Arch Linux (paru / pacman)
+    ./IGNITE.sh   # Fedora (dnf + COPR)
+    ./PHANTOM.sh  # Void Linux (xbps + runit)
 
 ---
 
-## Screenshots
+## Preview
 
-![Hero](frames/Hero.png)
-
-
----
-
-## Usage
-
-Clone the repo first:
-
-```bash
-git clone https://github.com/maxbytess/vroomies.git
-cd vroomies
-```
-
-Then run the script for your distro:
-
-```bash
-# Arch / Arch-based
-bash setup/AETHER.sh
-
-# Fedora
-bash setup/IGNITE.sh
-
-# Void Linux
-bash setup/PHANTOM.sh
-
-# NixOS
-bash setup/EDEN.sh
-```
-
-> Scripts will ask for a reboot at the end. Recommended to accept.
+![Desktop](screenshots/hero.png)
 
 ---
 
 ## Structure
 
-```
-vroomies/
-├── setup/
-│   ├── AETHER.sh         # Arch setup
-│   ├── IGNITE.sh         # Fedora setup
-│   ├── PHANTOM.sh        # Void Linux setup
-│   └── EDEN.sh           # NixOS setup
-├── nix/
-│   ├── flake.nix         # Flake inputs & outputs
-│   ├── configuration.nix # System config
-│   └── home.nix          # Home Manager config
-├── fonts/                # Custom fonts
-├── frames/               # Screenshots (Hero.png)
-├── settings/             # Extra config files
-├── visions/              # Wallpapers
-├── index.html
-└── style.css
-```
-
----
-
-## Community
-
-Found this through Reddit? Drop by:
-
-- [r/hyprland](https://www.reddit.com/r/hyprland)
-- [r/quickshell](https://www.reddit.com/r/quickshell)
+    vroomies/
+    ├── settings/
+    │   ├── niri/
+    │   ├── rofi/
+    │   ├── quickshell/
+    │   └── ...
+    ├── AETHER.sh
+    ├── IGNITE.sh
+    ├── PHANTOM.sh
+    └── README.md
 
 ---
 
 ## License
 
-MIT — do whatever you want with it, just don't forget to vroom. 🏎️
+This project is licensed under the [MIT License](LICENSE).
