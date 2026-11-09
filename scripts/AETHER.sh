@@ -32,9 +32,9 @@ fi
 
 echo "[*] Installing core system packages and dependencies..."
 paru -S --needed --noconfirm \
-    quickshell-git niri awww-git matugen-bin rofi-wayland \
+    quickshell-git hyprland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-desktop-portal-kde awww-git matugen-bin rofi-wayland \
     bluez bluez-utils libnotify jq curl gawk flatpak \
-    pipewire wireplumber hyprlock
+    pipewire wireplumber hyprlock 
 
 echo "[*] Copying configuration files to ~/.config..."
 mkdir -p ~/.config
