@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+WALL_DIR="$HOME/.config/hypr/yuna"
+SYMLINK="$HOME/.config/hypr/wall"
+
+apply_wallpaper() {
+    local wall="$1"
+
+    [[ -f "$wall" ]] || exit 1
+    wall="$(realpath "$wall")"
+
+    ln -sfn "$wall" "$SYMLINK"
+
+    matugen image "$wall" --source-color-index 0
+
+    awww img "$wall" \
+        -o eDP-1 \
+        --transition-type fade \
+        --transition-angle 0 \
+        --transition-duration 0.6 \
+        --transition-fps 144 \
+        --resize crop
+}
+
+if [[ -n "${1:-}" ]]; then
+    apply_wallpaper "$1"
+    exit 0
+fi
+
+exit 1

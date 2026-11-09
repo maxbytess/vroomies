@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+COVER="/tmp/spotify_cover.jpg"
+
+rm -f "$COVER"
+
+playerctl --player=spotify metadata \
+    --format '{{title}}|||{{artist}}|||{{album}}' \
+    --follow 2>/dev/null |
+while IFS='|' read -r title sep1 sep2 artist sep3 sep4 album; do
+
+    [[ -z "$title" ]] && continue
+
+    title="$(printf '%s' "$title" | xargs)"
+    artist="$(printf '%s' "$artist" | xargs)"
+    album="$(printf '%s' "$album" | xargs)"
+
+    art_url="$(playerctl --player=spotify metadata mpris:artUrl 2>/dev/null)"
+
+    icon_args=()
+
+    if [[ -n "$art_url" ]] &&
+       curl -fsSL "$art_url" -o "$COVER" 2>/dev/null &&
+       [[ -s "$COVER" ]]; then
+        icon_args=(-i "$COVER")
+    fi
+
+    if [[ -n "$artist" && -n "$album" ]]; then
+        body="$artist $album"
+    elif [[ -n "$artist" ]]; then
+        body="$artist"
+    else
+        body="$album"
+    fi
+
+    notify-send \
+        -a "Spotify" \
+        "${icon_args[@]}" \
+        "$title" \
+        "$body"
+
+done
