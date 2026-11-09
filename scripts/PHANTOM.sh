@@ -26,7 +26,7 @@ fi
 
 echo "[*] Installing core system packages..."
 sudo xbps-install -Sy \
-    niri rofi-wayland bluez libnotify jq curl gawk flatpak \
+    hyprland hyprland-devel xdg-desktop-portal-hyprland rofi-wayland bluez libnotify jq curl gawk flatpak \
     pipewire wireplumber dbus hyprlock
 
 echo "[*] Linking Runit services..."
