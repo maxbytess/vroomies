@@ -1,0 +1,101 @@
+
+configuration {
+    show-icons:                 false;
+}
+
+@import "colors.rasi"
+@import "fonts.rasi"
+
+window {
+    transparency:               "real";
+    location:                   north;
+    anchor:                     north;
+    fullscreen:                 false;
+    width:                      560px;
+    x-offset:                   0px;
+    y-offset:                   24px;
+
+    enabled:                    true;
+    margin:                     0px;
+    padding:                    10px;
+    border:                     1px solid;
+    border-color:               @bg2;
+    border-radius:              12px;
+    cursor:                     "default";
+    background-color:           @bg0;
+}
+
+mainbox {
+    enabled:                    true;
+    spacing:                    4px;
+    margin:                     0px;
+    padding:                    0px;
+    border:                     0px solid;
+    border-radius:              0px;
+    background-color:           @bg0;
+    text-color:                 @text;
+    children:                   [ "listview" ];
+}
+
+listview {
+    enabled:                    true;
+    columns:                    5;
+    lines:                      1;
+    cycle:                      true;
+    dynamic:                    false;
+    scrollbar:                  false;
+    layout:                     horizontal;
+    reverse:                    false;
+    fixed-height:               true;
+    fixed-columns:              true;
+
+    spacing:                    4px;
+    margin:                     0px;
+    padding:                    4px 0px;
+    border:                     0px solid;
+    border-radius:              8px;
+    background-color:           transparent;
+    text-color:                 @text;
+    cursor:                     "default";
+}
+
+element {
+    enabled:                    true;
+    spacing:                    0px;
+    margin:                     0px;
+    padding:                    14px 0px;
+    border:                     0px solid;
+    border-radius:              6px;
+    background-color:           transparent;
+    text-color:                 @text;
+    cursor:                     pointer;
+}
+
+element normal.normal {
+    background-color:           transparent;
+    text-color:                 @text;
+}
+
+element alternate.normal {
+    background-color:           transparent;
+    text-color:                 @text;
+}
+
+element selected.normal {
+    background-color:           @bg1;
+    text-color:                 @blue;
+}
+
+element selected.active {
+    background-color:           @bg1;
+    text-color:                 @blue;
+}
+
+element-text {
+    font:                       "feather 26";
+    background-color:           transparent;
+    text-color:                 inherit;
+    cursor:                     inherit;
+    vertical-align:             0.5;
+    horizontal-align:           0.5;
+}
