@@ -26,12 +26,11 @@ if lspci | grep -i "nvidia" &> /dev/null; then
 fi
 
 echo "[*] Installing core system packages from official repos..."
-sudo dnf install -y niri rofi-wayland bluez bluez-tools libnotify jq curl gawk flatpak hyprlock
+sudo dnf install -y rofi-wayland bluez bluez-tools libnotify jq curl gawk flatpak hyprlock
 
 echo "[*] Enabling COPR repos and installing customization tools..."
-sudo dnf copr enable -y keyitdev/quickshell || true
-sudo dnf copr enable -y varlad/niri-tools || true
-sudo dnf install -y quickshell matugen awww || echo "[!] Warning: Some COPR packages failed to install, continuing..."
+sudo dnf copr enable -y errornointernet/quickshell || true
+sudo dnf install -y quickshell matugen awww hyprland hyprland-devel || echo "[!] Warning: Some COPR packages failed to install, continuing..."
 
 echo "[*] Copying configuration files to ~/.config..."
 mkdir -p ~/.config
