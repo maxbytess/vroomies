@@ -1,13 +1,4 @@
 [config]
-# ...
-
-[templates.m3colors]
-input_path = '~/.config/matugen/templates/colors.json'
-output_path = '~/.config/quickshell/vv/Colors/Colors.json'
-
-[templates.wlogout]
-input_path = '~/.config/matugen/templates/wlogout'
-output_path = '~/.config/wlogout/colors.css'
 
 [templates.rofi]
 input_path = '~/.config/matugen/templates/rofi'
@@ -25,3 +16,7 @@ post_hook = 'pkill -SIGUSR1 nvim || true'
 [templates.yuna]
 input_path = '~/.config/matugen/templates/yuna'
 output_path = '~/.config/quickshell/nn/colors.json'
+
+[templates.hypr]
+input_path = '~/.config/matugen/templates/hypr'
+output_path = '~/.config/hypr/colors.lua'
