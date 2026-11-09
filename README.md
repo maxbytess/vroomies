@@ -27,7 +27,7 @@ Run the script for your distribution:
 
 ## Preview
 
-![Desktop](screenshots/hero.png)
+![Desktop](screenshots/Yuni.png)
 
 ---
 
