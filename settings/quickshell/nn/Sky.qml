@@ -31,7 +31,7 @@ PanelWindow {
     margins {
         top: 56
         bottom: 10
-        left: 0
+        left: 12
     }
 
     implicitWidth: 340
