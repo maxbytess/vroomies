@@ -2,7 +2,7 @@
 
 > 間違いも無駄も、全部愛していく。
 
-Minimal, scrollable, and bloat-free Niri setup for **Arch Linux, Fedora, and Void Linux**.
+Minimal and bloat-free Hyprland setup for Arch Linux, Fedora, and Void Linux.**.
 
 ---
 
@@ -35,7 +35,7 @@ Run the script for your distribution:
 
     vroomies/
     ├── settings/
-    │   ├── niri/
+    │   ├── hypr/
     │   ├── rofi/
     │   ├── quickshell/
     │   └── ...
