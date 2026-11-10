@@ -98,7 +98,9 @@ PanelWindow {
 
     readonly property var sortedApps: {
         var rev = appRevision
-        var all = [...DesktopEntries.applications.values]
+        var all = [...DesktopEntries.applications.values].filter(
+            a => a.icon && a.icon.length > 0 && Quickshell.iconPath(a.icon, true) !== ""
+        )
         all.sort((a, b) => (a.name || "").localeCompare(b.name || ""))
         return all
     }
@@ -126,15 +128,12 @@ PanelWindow {
         var low = s.toLowerCase()
 
         if (low === "/w" || low.indexOf("/w ") === 0) {
-            mode = "wallpaper"
+            if (mode !== "wallpaper") mode = "wallpaper"
             query = ""
             return
         }
 
-        if (mode === "wallpaper" && low !== "/w") {
-            mode = "apps"
-        }
-
+        if (mode !== "apps") mode = "apps"
         query = s
     }
 
@@ -181,10 +180,9 @@ PanelWindow {
     onModeChanged: {
         if (mode === "wallpaper") {
             wallListProc.running = true
-            Qt.callLater(() => wallList.forceActiveFocus())
-        } else if (mode === "apps") {
-            Qt.callLater(() => searchInput.forceActiveFocus())
+            wallList.currentIndex = 0
         }
+        Qt.callLater(() => searchInput.forceActiveFocus())
     }
 
     IpcHandler {
@@ -226,6 +224,14 @@ PanelWindow {
         border.width: 1
         border.color: Qt.rgba(dock.blue.r, dock.blue.g, dock.blue.b, 0.25)
 
+        opacity: dock.launcherOpen ? 1 : 0
+        Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+
+        transform: Translate {
+            x: dock.launcherOpen ? 0 : -28
+            Behavior on x { NumberAnimation { duration: 220; easing.type: Easing.OutCubic } }
+        }
+
         ColumnLayout {
             anchors.fill: parent
             anchors.margins: 12
@@ -234,19 +240,13 @@ PanelWindow {
             RowLayout {
                 Layout.fillWidth: true
                 Text {
-                    text: dock.mode === "wallpaper" ? "󰸉  Wallpapers" : "󱓞  Apps"
+                    text: dock.mode === "wallpaper" ? "   Walls" : " App Launcher"
                     color: dock.blue
-                    font.pixelSize: 15
+                    font.pixelSize: 19
                     font.bold: true
                     font.family: dock.launcherFont
                 }
                 Item { Layout.fillWidth: true }
-                Text {
-                    text: "Esc"
-                    color: dock.grey1
-                    font.pixelSize: 10
-                    font.family: dock.launcherFont
-                }
             }
 
             Rectangle {
@@ -275,7 +275,7 @@ PanelWindow {
                         Layout.fillWidth: true
                         placeholderText: dock.mode === "wallpaper"
                             ? "Wallpaper selector..."
-                            : "Search apps... (/w for wallpapers)"
+                            : "Search trizen <3  (/w for walls)"
                         font.pixelSize: dock.launcherFontSize
                         font.family: dock.launcherFont
                         color: dock.text
@@ -283,8 +283,7 @@ PanelWindow {
                         leftPadding: 0; rightPadding: 0
                         topPadding: 0; bottomPadding: 0
                         background: Rectangle { color: "transparent" }
-                        readOnly: dock.mode === "wallpaper"
-
+                
                         onTextChanged: {
                             if (dock.suppress) return
                             dock.handleInput(text)
@@ -295,12 +294,15 @@ PanelWindow {
 
                         Keys.onPressed: event => {
                             if (dock.mode === "wallpaper") {
-                                if (event.key === Qt.Key_Backspace) {
+                                if (event.key === Qt.Key_Down) {
                                     event.accepted = true
-                                    dock.mode = "apps"
-                                    dock.suppress = true
-                                    searchInput.text = ""
-                                    dock.suppress = false
+                                    wallList.incrementCurrentIndex()
+                                } else if (event.key === Qt.Key_Up) {
+                                    event.accepted = true
+                                    wallList.decrementCurrentIndex()
+                                } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                                    event.accepted = true
+                                    dock.applyWall(dock.wallFiles[wallList.currentIndex])
                                 }
                             } else {
                                 if (event.key === Qt.Key_Down) {
@@ -345,12 +347,15 @@ PanelWindow {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 visible: dock.showList
+                onVisibleChanged: if (visible) appFade.restart()
+                NumberAnimation { id: appFade; target: appList; property: "opacity"; from: 0; to: 1; duration: 160; easing.type: Easing.OutCubic }
                 clip: true
                 spacing: 3
                 model: dock.appModel
                 currentIndex: dock.appModel.length > 0 ? 0 : -1
                 keyNavigationWraps: true
                 highlightMoveDuration: 0
+                highlightMoveVelocity: -1
                 boundsBehavior: Flickable.StopAtBounds
 
                 highlight: Rectangle {
@@ -405,20 +410,12 @@ PanelWindow {
                             Text {
                                 text: entry.modelData.name || ""
                                 color: appList.currentIndex === entry.index ? dock.blue : dock.text
+                                Behavior on color { ColorAnimation { duration: 100 } }
                                 font.pixelSize: 13
                                 font.family: dock.launcherFont
                                 font.bold: appList.currentIndex === entry.index
                                 elide: Text.ElideRight
                                 Layout.fillWidth: true
-                            }
-                            Text {
-                                text: entry.modelData.comment || entry.modelData.genericName || ""
-                                color: dock.grey1
-                                font.pixelSize: 10
-                                font.family: dock.launcherFont
-                                elide: Text.ElideRight
-                                Layout.fillWidth: true
-                                visible: text.length > 0
                             }
                         }
 
@@ -461,6 +458,8 @@ PanelWindow {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 visible: dock.showWallpapers
+                onVisibleChanged: if (visible) wallFade.restart()
+                NumberAnimation { id: wallFade; target: wallContainer; property: "opacity"; from: 0; to: 1; duration: 180; easing.type: Easing.OutCubic }
 
                 ListView {
                     id: wallList
@@ -470,7 +469,9 @@ PanelWindow {
                     model: dock.wallFiles
                     currentIndex: 0
                     boundsBehavior: Flickable.StopAtBounds
-                    focus: dock.showWallpapers
+                    highlightMoveDuration: 0
+                    highlightMoveVelocity: -1
+                    cacheBuffer: 1200
 
                     Keys.onEscapePressed: dock.closeLauncher()
                     Keys.onUpPressed: decrementCurrentIndex()
@@ -491,6 +492,8 @@ PanelWindow {
                         color: isCurrent ? dock.bg2 : dock.bg1
                         border.width: 2
                         border.color: isCurrent ? dock.blue : "transparent"
+                        Behavior on color { ColorAnimation { duration: 120 } }
+                        Behavior on border.color { ColorAnimation { duration: 120 } }
 
                         Item {
                             anchors.fill: parent
@@ -501,8 +504,9 @@ PanelWindow {
                                 anchors.fill: parent
                                 source: "file://" + card.modelData
                                 fillMode: Image.PreserveAspectCrop
-                                sourceSize.width: 600
+                                sourceSize.width: 480
                                 asynchronous: true
+                                cache: true
                                 smooth: true
                                 visible: false
                             }
@@ -516,11 +520,16 @@ PanelWindow {
                                 anchors.fill: parent
                                 source: thumb
                                 maskSource: thumbMask
-                                visible: thumb.status === Image.Ready
+                                opacity: thumb.status === Image.Ready ? 1 : 0
+                                Behavior on opacity { NumberAnimation { duration: 220 } }
                             }
 
                             Rectangle {
-                                visible: card.isActive
+                                visible: opacity > 0
+                                opacity: card.isActive ? 1 : 0
+                                scale: card.isActive ? 1 : 0.4
+                                Behavior on opacity { NumberAnimation { duration: 150 } }
+                                Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
                                 anchors.right: parent.right
                                 anchors.top: parent.top
                                 anchors.margins: 6
@@ -537,7 +546,7 @@ PanelWindow {
                             anchors.fill: parent
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
-                            onEntered: wallList.currentIndex = card.index
+                            onPositionChanged: wallList.currentIndex = card.index
                             onClicked: dock.applyWall(card.modelData)
                         }
                     }
