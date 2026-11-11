@@ -46,7 +46,7 @@ Minimal, bloat-free Hyprland setup for **Arch Linux**, **Fedora**, and **Void Li
   | [Hyprland](https://github.com/hyprwm/hyprland) | The compositor (manages and renders windows) |
   | [Quickshell](https://quickshell.outfoxxed.me/) | QtQuick-based widget system (bar, launcher, wallpaper selector) |
   | [Rofi](https://github.com/davatorium/rofi) | App launcher and power menu — also used by some helper scripts |
-  | Others | See the installer scripts for the full dependency list |
+  | Others | See the per-distro guides in [`installation/`](Installation/) for the full dependency list |
 
 </details>
 
