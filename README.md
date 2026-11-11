@@ -48,4 +48,11 @@ Run the script for your distribution:
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE). 
+
+<div align="center">
+    <h2>• stonks •</h2>
+    <h3></h3>
+</div>
+
+[![RepoStars](https://repostars.dev/api/embed?repo=maxbytess%2Fvroomies&theme=dark)](https://repostars.dev/?repos=maxbytess%2Fvroomies&theme=dark)
